@@ -50,7 +50,7 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.RepoVi
     }
 
     @Override public long getItemId(int position) {
-        return data.get(position).id;
+        return data.get(position).id();
     }
 
     static final class RepoViewHolder extends RecyclerView.ViewHolder {
@@ -73,10 +73,10 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.RepoVi
 
         public void bind(Repo repo){
             this.repo = repo;
-            repoName.setText(repo.name);
-            repoDescription.setText(repo.description);
-            repoForks.setText(String.valueOf(repo.forks));
-            repoStars.setText(String.valueOf(repo.stars));
+            repoName.setText(repo.name());
+            repoDescription.setText(repo.description());
+            repoForks.setText(String.valueOf(repo.forks()));
+            repoStars.setText(String.valueOf(repo.stars()));
         }
     }
 }

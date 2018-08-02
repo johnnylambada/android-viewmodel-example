@@ -37,7 +37,7 @@ public class SelectedRepoViewModel extends ViewModel {
 
     public void saveToBundle(Bundle outState) {
         if (selectedRepo.getValue() != null) {
-            final String[] val = new String[]{selectedRepo.getValue().owner.login, selectedRepo.getValue().name};
+            final String[] val = new String[]{selectedRepo.getValue().owner().login(), selectedRepo.getValue().name()};
             outState.putStringArray(REPO_DETAILS, val);
         }
     }

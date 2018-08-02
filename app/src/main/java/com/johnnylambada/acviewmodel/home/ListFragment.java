@@ -77,7 +77,7 @@ public class ListFragment extends Fragment implements RepoSelectedListener {
                 errorTextView.setText(null);
             }
         });
-        viewModel.getRepoLoadError().observe(this, isLoading ->{
+        viewModel.getRepoLoading().observe(this, isLoading ->{
             //noinspection ConstantConditions
             loadingView.setVisibility(isLoading?View.VISIBLE:View.GONE);
             if (isLoading){

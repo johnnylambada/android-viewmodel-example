@@ -1,6 +1,9 @@
 package com.johnnylambada.acviewmodel.networking;
 
+import com.johnnylambada.acviewmodel.model.ModelAdapterFactory;
 import com.johnnylambada.acviewmodel.model.Repo;
+import com.ryanharter.auto.value.moshi.MoshiAdapterFactory;
+import com.squareup.moshi.Moshi;
 
 import javax.inject.Singleton;
 
@@ -16,10 +19,18 @@ public abstract class NetworkModule {
 
     @Provides
     @Singleton
-    static Retrofit provideRetrofit(){
+    static Moshi provideMoshi(){
+        return new Moshi.Builder()
+                .add(ModelAdapterFactory.create())
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    static Retrofit provideRetrofit(Moshi moshi){
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build();
     }
 
