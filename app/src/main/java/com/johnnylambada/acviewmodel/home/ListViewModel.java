@@ -6,9 +6,11 @@ import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
 import com.johnnylambada.acviewmodel.model.Repo;
-import com.johnnylambada.acviewmodel.networking.RepoApi;
+import com.johnnylambada.acviewmodel.networking.RepoService;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,8 +22,11 @@ public class ListViewModel extends ViewModel {
     private final MutableLiveData<Boolean> repoLoadError = new MutableLiveData<>();
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>();
     private Call<List<Repo>> repoCall;
+    private RepoService repoService;
 
-    public ListViewModel(){
+    @Inject
+    public ListViewModel(RepoService repoService){
+        this.repoService = repoService;
         fetchRepos();
     }
 
@@ -32,7 +37,7 @@ public class ListViewModel extends ViewModel {
     private void fetchRepos() {
         loading.setValue(true);
 
-        repoCall = RepoApi.getRepoService().getRepositories();
+        repoCall = repoService.getRepositories();
         repoCall.enqueue(new Callback<List<Repo>>() {
             @Override public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
                 repoLoadError.setValue(false);
