@@ -15,12 +15,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.johnnylambada.acviewmodel.R;
+import com.johnnylambada.acviewmodel.details.DetailsFragment;
+import com.johnnylambada.acviewmodel.model.Repo;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements RepoSelectedListener {
 
     @BindView(R.id.list_view) RecyclerView listView;
     @BindView(R.id.tv_error) TextView errorTextView;
@@ -41,7 +43,7 @@ public class ListFragment extends Fragment {
         viewModel = ViewModelProviders.of(this).get(ListViewModel.class);
 
         listView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        listView.setAdapter(new RepoListAdapter(viewModel, this));
+        listView.setAdapter(new RepoListAdapter(viewModel, this, this));
         listView.setLayoutManager(new LinearLayoutManager(getContext()));
         observeViewModel();
     }
@@ -80,5 +82,15 @@ public class ListFragment extends Fragment {
             unbinder.unbind();
             unbinder = null;
         }
+    }
+
+    @Override public void onRepoSelected(Repo repo) {
+        SelectedRepoViewModel selectedRepoViewModel = ViewModelProviders.of(getActivity())
+                .get(SelectedRepoViewModel.class);
+        selectedRepoViewModel.setSelectedRepo(repo);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.screen_container,new DetailsFragment())
+                .addToBackStack(null)
+                .commit();
     }
 }
